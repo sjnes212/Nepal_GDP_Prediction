@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepal GDP Prediction</title>
+</head>
+<body>
+    <h1>Nepal GDP Prediction</h1>
+    <form action="/predict" method="POST">
+        <label for="year">Year:</label>
+        <input type="number" id="year" name="year" min="2000" max="2030" required><br><br>
+        
+        <label for="population">Population (in millions):</label>
+        <input type="number" id="population" name="population" step="0.1" required><br><br>
+        
+        <label for="inflation">Inflation Rate (%):</label>
+        <input type="number" id="inflation" name="inflation" step="0.1" required><br><br>
+        
+        <label for="unemployment">Unemployment Rate (%):</label>
+        <input type="number" id="unemployment" name="unemployment" step="0.1" required><br><br>
+        
+        <button type="submit">Predict GDP</button>
+    </form>
+
+    {% if results %}
+        <h2>Model Evaluation Results</h2>
+        <table border="1">
+            <tr>
+                <th>Model</th>
+                <th>MAE</th>
+                <th>R2 Score</th>
+            </tr>
+            {% for name, metrics in results.items() %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ metrics['MAE'] }}</td>
+                    <td>{{ metrics['R2 Score'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if predictions %}
+        <h2>GDP Predictions</h2>
+        <table border="1">
+            <tr>
+                <th>Model</th>
+                <th>Predicted GDP (in billion USD)</th>
+            </tr>
+            {% for name, prediction in predictions.items() %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ prediction }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if plot_url %}
+        <h2>GDP Over Time</h2>
+        <img src="{{ plot_url }}" alt="GDP Over Time">
+    {% endif %}
+</body>
+</html>
